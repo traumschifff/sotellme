@@ -15,6 +15,15 @@
     }
     small {
         color: rgb(43, 43, 43);
+        margin-top: 20px;
+    }
+    #start-buttons {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
     }
     .button {
         display: flex;
@@ -22,20 +31,28 @@
         align-items: center;
         color: #fff;
         width: 200px;
-        height: 200px;
+        height: 160px;
         border: 1px solid #fff;
-
+        gap: 18px;
+        text-decoration: none;
+    }
+    .button:hover {
+        background-color: #2e2e2e;
+    }
+    small {
+        display: block;
+        margin-top: 20px;
     }
   </style>
 </head>
 <body>
   <h1>so tell me</h1>
 
-  <div>
+  <div id="start-buttons">
       <a href="guide.html" class="button">guide</a>
       <a href="medium.html" class="button">medium</a>
   </div>
 
-  <small>hi sarah</small>
+  <small>hi sarah - elliott</small>
 </body>
 </html>
