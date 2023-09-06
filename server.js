@@ -49,19 +49,24 @@ wss.on('connection', (ws) => {
     conversationHistory.push({ role: 'user', content: messageStr });
 
     try {
-      const responseContent = `The papaya ( Carica papaya ) is a plant in the family Caricaceae . The plant is closely related to the mountain papaya ( Vasconcellea cundinamarcensis , synonym: Carica pubescens ).
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: systemMessage
+          },
+          ...conversationHistory
+        ]
+      });
 
-      In Belgium and the Netherlands, the papaya is imported from Central America , Asia , Central and South Africa . Papaya is now also grown in a greenhouse in the Netherlands. they also need special soil. There is little or no seasonality in the supply of papaya; the fruit is available all year round.
-      
-      The papaya is the fruit of a melon tree and is therefore called "tree melon". The fruits grow on the trunk of the tree. The papaya tree is native to Mexico. The tree can grow up to six meters high. The trunk is hollow, the leaves are large and finger-shaped. There are several subspecies of papayas.
-      
-      Leaf of a young papaya plant
-      The fruit is round to oval, about 20 cm long. The weight of a papaya sold in Belgium or the Netherlands can vary from 300-500 g, although the fruits can weigh 6 kg. However, papayas of this weight are not exported. The papaya has a smooth, thin skin, which changes color from green to yellow-green mottled as it ripens. A ripe papaya has salmon-pink to yellow-orange flesh, smells somewhat like apricots , is buttery soft and tastes sweet and melon-like . The pulp of the papaya contains no fruit acids, resulting in a very sweet taste. In the middle of the papaya is a hollow space that is filled with black seeds, which are not eaten. The seeds can be dried and used as pepperwith certain dishes.
-      
-      In the tropics, the seeds are used as a medicine against intestinal parasites, because of the laxative effect. Immature specimens are eaten as a vegetable .
-      
-      The fruits must be harvested when the ripening process has just begun and papayas picked too early cannot ripen. They are vulnerable products for export.`
+      console.log(completion.choices[0].message.content.trim());
 
+      // Add the assistant's message to the conversation history
+      conversationHistory.push({ role: 'assistant', content: completion.choices[0].message.content.trim() });
+
+      const responseContent = completion.choices[0].message.content.trim();
+      
       console.log(`Sending: ${responseContent}`);
 
       // Send the response to all connected clients
@@ -70,7 +75,6 @@ wss.on('connection', (ws) => {
           client.send(JSON.stringify(responseContent));
         }
       }
-
     } catch (error) {
       console.error(`Error: ${error}`);
       ws.send('An error occurred.');
