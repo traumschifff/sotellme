@@ -24,6 +24,7 @@
         padding: 10px;
     }
     #loading {
+        font-size: 80px;
         display: none;
         position: absolute;
         top: 50%;
@@ -43,7 +44,7 @@
 </head>
 <body>
 
-<div id="loading">transmitting...</div>
+<div id="loading">thinking...</div>
 <div id="answer"></div>
 
 <script>
@@ -75,6 +76,7 @@
         if (text === 'transmitting') {
             answerDiv.style.top = '0px';  // Reset position
             loadingDiv.style.display = 'block';
+            answerDiv.innerHTML = '';
         } else {
             loadingDiv.style.display = 'none';
             answerDiv.innerHTML = text;
