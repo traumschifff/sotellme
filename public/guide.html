@@ -10,8 +10,18 @@
         -webkit-text-size-adjust: none;
     }
     body {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: max-content 1fr max-content;
+        justify-content: start;
         background-color: black;
-        padding: 10px;
+        height: 100dvh;
+        grid-gap: 18px;
+        margin: 0;
+        padding: 20px;
+    }
+    #recordButton {
+        width: max-content;
     }
     textarea {
         font-size: 30px;
@@ -24,12 +34,12 @@
         width: 100%;
         height: 600px;
         margin-bottom: 10px;
+        height: 100%;
     }
     #recordButton {
         color: #fff;
         font-size: 30px;
         background-color: transparent;
-        margin-bottom: 20px;
         padding: 0;
         cursor: pointer;
         text-decoration: underline;
@@ -51,6 +61,9 @@
     }
     #recordButton.pulse {
         animation: pulse 1.5s infinite ease-in-out;
+    }
+    #userInput {
+
     }
     button {
         font-size: 30px;
@@ -91,13 +104,17 @@
 
 <button id="recordButton">Record question</button>
 
-<br>
-<textarea id="userInput" rows="4" cols="50"></textarea><br>
-<div id="buttons">
-    <button id="clearButton">Clear</button>
-    <button id="sendButton">Send</button>
+<div>
+    <textarea id="userInput"></textarea><br>
 </div>
-<div id="status"></div>
+
+<div>
+    <div id="buttons">
+        <button id="clearButton">Clear</button>
+        <button id="sendButton">Send</button>
+    </div>
+    <div id="status"></div>
+</div>
 
 <div id="recordStatus"></div>
 
