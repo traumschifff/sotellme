@@ -50,45 +50,50 @@
     const ws = new WebSocket('ws://localhost:3000');
     const loadingDiv = document.getElementById('loading');
     const answerDiv = document.getElementById('answer');
-    let startTime = null;
 
-    const scrollText = (timestamp) => {
-        if (!startTime) startTime = timestamp;
-
-        const elapsed = timestamp - startTime;
-        const viewportHeight = window.innerHeight;
-        const answerHeight = answerDiv.scrollHeight;
-        const topMove = answerHeight - viewportHeight + 120;
-        const durationInSeconds = Math.ceil(topMove / 50) * 1000;  // Convert to milliseconds
-
-        const progress = Math.min(elapsed / durationInSeconds, 1);
-
-        answerDiv.style.top = `${-progress * topMove}px`;
-
-        if (progress < 1) {
-            requestAnimationFrame(scrollText);
-        }
+    const applyAnimation = (topMove, durationInSeconds) => {
+        // Remove existing animation to restart it
+        answerDiv.style.animation = 'none';
+        
+        // Force a reflow
+        answerDiv.offsetHeight;
+        
+        // Apply new animation
+        answerDiv.style.animation = `scrollUp ${durationInSeconds}s linear 1`;
     };
 
     ws.addEventListener('message', async function(event) {
         const text = JSON.parse(event.data);
         if (text === 'transmitting') {
-            answerDiv.style.top = '0px';  // Reset position
+            answerDiv.innerHTML = '';
             loadingDiv.style.display = 'block';
         } else {
             loadingDiv.style.display = 'none';
             answerDiv.innerHTML = text;
+            answerDiv.style = '';
 
+            // Measure the height of the viewport and the #answer div
             const viewportHeight = window.innerHeight;
             const answerHeight = answerDiv.scrollHeight;
 
+            // If the answer height is greater than the viewport height, scroll the text up
             if (answerHeight > viewportHeight) {
-                // Reset the starting time
-                startTime = null;
+                const topMove = answerHeight - viewportHeight + 120;
+                const durationInSeconds = Math.ceil(topMove / 50);
+                
+                // Inject new animation keyframes
+                let styleSheet = document.styleSheets[0];
+                let keyframes = `
+                    @keyframes scrollUp {
+                        0% { top: 0; }
+                        100% { top: -${topMove}px; }
+                    }
+                `;
+                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
 
                 // Wait for 3 seconds before starting the scroll
                 setTimeout(() => {
-                    requestAnimationFrame(scrollText);
+                    applyAnimation(topMove, durationInSeconds);
                 }, 3000);
             }
         }

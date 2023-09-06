@@ -35,15 +35,6 @@
         border-radius: 100%;
         cursor: pointer;
     }
-    #recordButton.pulse {
-        animation: pulse 1.5s infinite ease-in-out;
-    }
-    /* Pulse animation */
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
-    }
   </style>
 </head>
 <body>
@@ -58,22 +49,13 @@
   
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    const recordButton = document.getElementById('recordButton');
-
+  
     recognition.onresult = function(event) {
       const transcript = event.results[0][0].transcript;
       document.getElementById('userInput').value = transcript;
     };
-
-    recognition.onstart = function() {
-      recordButton.classList.add('pulse');
-    };
-
-    recognition.onend = function() {
-      recordButton.classList.remove('pulse');
-    };
   
-    recordButton.addEventListener('click', function() {
+    document.getElementById('recordButton').addEventListener('click', function() {
       recognition.start();
     });
   

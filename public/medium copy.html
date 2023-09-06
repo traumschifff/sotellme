@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Medium</title>
+  <style>
+    *, *:before, *:after { box-sizing: border-box; }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #fff;
+        background-color: black;
+        overflow: hidden;
+    }
+    #answer {
+        font-size: 80px;
+        line-height: 120px;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        top: 0;
+        padding: 10px;
+    }
+    #loading {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        text-align: center;
+        animation: pulse 1.5s infinite ease-in-out;
+    }
+    /* Animation Keyframes */
+    @keyframes scrollUp {
+        0% {
+            top: 0;
+        }
+        100% {
+            top: -120px; /* You can adjust this based on your requirements */
+        }
+    }
+    /* Pulse animation */
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.3;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">transmitting...</div>
+<div id="answer"></div>
+
+<script>
+    const ws = new WebSocket('ws://localhost:3000');
+    let offset = 0;
+    const loadingDiv = document.getElementById('loading');
+
+    ws.addEventListener('message', async function(event) {
+        const text = JSON.parse(event.data);
+        if (text == 'transmitting') {
+            loadingDiv.style.display = 'block';
+
+        } else {
+            loadingDiv.style.display = 'none';
+            const answerDiv = document.getElementById('answer');
+
+            answerDiv.innerHTML = text;
+
+            // Check if the text length is 10 characters
+            if (text.length >= 10) {
+                // Wait for 10 seconds before animating
+                await new Promise(resolve => setTimeout(resolve, 10000));
+
+                // Apply CSS Animation
+                answerDiv.style.animation = 'scrollUp 5s linear';  // The animation lasts for 2 seconds
+            }
+        }
+    });
+</script>
+</body>
+</html>
