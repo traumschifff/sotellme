@@ -14,6 +14,17 @@ const openai = new OpenAI({ apiKey });
 const app = express();
 app.use(express.static('public')); // Serve static files from the "public" directory
 
+// New route to display conversation
+app.get('/transcript', (req, res) => {
+    let conversationText = '';
+    conversationHistory.forEach(message => {
+      const { role, content } = message;
+      conversationText += `${role}: ${content}\n`;
+    });
+    res.setHeader('Content-Type', 'text/plain');
+    res.send(conversationText);
+});
+
 const server = app.listen(3000, () => {
   console.log("Server started on http://localhost:3000");
 });

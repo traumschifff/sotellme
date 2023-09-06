@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conversation Transcript</title>
+</head>
+<body>
+
+<h1>Live Conversation Transcript</h1>
+<button id="fetchTranscript">Fetch Transcript</button>
+<pre id="transcriptArea"></pre>
+
+<script>
+  const ws = new WebSocket('ws://localhost:3000');
+
+  ws.addEventListener('open', () => {
+    console.log('WebSocket connection open.');
+    fetchTranscript();  // Fetch transcript initially
+  });
+
+  ws.addEventListener('message', (event) => {
+    const data = JSON.parse(event.data);
+    
+    if (data.type === 'history') {
+      document.getElementById('transcriptArea').textContent = data.content;
+    } else {
+      // Handle other types of messages here
+    }
+  });
+
+  function fetchTranscript() {
+    ws.send('GET_HISTORY');
+  }
+
+  // Attach event listener to button to fetch transcript manually
+  document.getElementById('fetchTranscript').addEventListener('click', fetchTranscript);
+</script>
+
+</body>
+</html>
