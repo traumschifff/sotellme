@@ -1,7 +1,7 @@
 # So Tell Me
 
 
-Start server: `nodemon server.js`
+Start server: `node start`
 
 ---
 
