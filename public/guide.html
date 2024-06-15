@@ -120,7 +120,7 @@
 
 <script>
     let ws;
-    if (window.location.hostname === 'localhost') {
+    if (sotellme-online.vercel.app === 'localhost') {
         ws = new WebSocket('ws://localhost:3000'); // Local development
     } else {
         ws = new WebSocket('ws://sotellme-online.vercel.app/'); // Production
