@@ -35,7 +35,7 @@ const wss = new Server({ server });
 const clients = new Set();
 
 // System message, adjust this to your needs
-const systemMessage = 'You are a patient undergoing psychoanalytic therapy.';
+const systemMessage = 'You are now in a role play. In this role play, I am a guide in a psychoanalytic session. You are the client, whose unconsious patterns are the subject of this therapy session. Your answers are not longer than 5 sentences.';
 
 let conversationHistory = [];
 
@@ -62,6 +62,7 @@ wss.on('connection', (ws) => {
     try {
       const completion = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
+        max_tokens: 100,
         messages: [
           {
             role: 'system',
@@ -69,8 +70,9 @@ wss.on('connection', (ws) => {
           },
           ...conversationHistory
         ]
+        
       });
-
+      
       console.log(completion.choices[0].message.content.trim());
 
       // Add the assistant's message to the conversation history

@@ -138,10 +138,11 @@
     recognition.onend = function() {
       recordStatus.style.display = 'none';
     };
+
   
     recordButton.addEventListener('click', function() {
       recognition.start();
-    });
+    });-
   
     document.getElementById('clearButton').addEventListener('click', function() {
       document.getElementById('userInput').value = "";

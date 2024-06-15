@@ -61,7 +61,7 @@
         const viewportHeight = window.innerHeight;
         const answerHeight = answerDiv.scrollHeight;
         const topMove = answerHeight - viewportHeight + 120;
-        const durationInSeconds = Math.ceil(topMove / 50) * 1000;  // Convert to milliseconds
+        const durationInSeconds = Math.ceil(topMove / 50) * 1300;  // Convert to milliseconds
 
         const progress = Math.min(elapsed / durationInSeconds, 1);
 
@@ -92,7 +92,7 @@
                 // Wait for 3 seconds before starting the scroll
                 setTimeout(() => {
                     requestAnimationFrame(scrollText);
-                }, 3000);
+                }, 5000);
             }
         }
     });
