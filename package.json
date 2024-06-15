@@ -1,7 +1,7 @@
 {
-    "name": "your-app-name",
+    "name": "sotellme_online",
     "version": "1.0.0",
-    "description": "Your app description",
+    "description": "Web GPT Therarpy Role Play Kit",
     "main": "server.js",
     "scripts": {
       "start": "node server.js"

@@ -119,7 +119,12 @@
 <div id="recordStatus"></div>
 
 <script>
-    const ws = new WebSocket('ws://localhost:3000');
+    let ws;
+    if (window.location.hostname === 'localhost') {
+        ws = new WebSocket('ws://localhost:3000'); // Local development
+    } else {
+        ws = new WebSocket('ws://sotellme-online.vercel.app/'); // Production
+    }
   
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
